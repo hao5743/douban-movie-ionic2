@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="home">
+  <h2>Welcome to Ionic!</h2>
+
+  <p *ngFor="let item of heros">
+    {{item}}
+  </p>
+  <ion-list>
+     <button ion-item *ngFor="let p of heros" (click)="presentActionSheet()">
+       {{p}}
+     </button>
+   </ion-list>
+<button></button>
+<button (click)="showAlert()">showAlert</button>
+<ion-item>
+  <ion-icon name="logo-twitter" item-left></ion-icon>
+  Followers
+  <ion-badge item-right>260k</ion-badge>
+</ion-item>
+<button light>Light</button>
+<button>Default</button>
+<button secondary>Secondary</button>
+<button danger>Danger</button>
+<button dark>Dark</button>
+
+<button light outline>Light Outline</button>
+<button outline>Primary Outline</button>
+<button secondary outline>Secondary Outline</button>
+<button danger outline>Danger Outline</button>
+<button dark outline>Dark Outline</button>
+
+<button light round>Light Round</button>
+<button round>Primary Round</button>
+<button secondary round>Secondary Round</button>
+<button danger round>Danger Round</button>
+<button dark round>Dark Round</button>
+
+<button block>Block Button</button>
+<button full>Full Button</button>
+
+<button small>Small</button>
+<button>Default</button>
+<button large>Large</button>
+
+<button>
+  <ion-icon name="home"></ion-icon>
+  Left Icon
+</button>
+
+<!-- Float the icon right -->
+<button>
+  Right Icon
+  <ion-icon name="home"></ion-icon>
+</button>
+
+<!-- Only icon (no text) -->
+<button>
+  <ion-icon name="home"></ion-icon>
+</button>
+
+<button fab>FAB</button>
+
+<ion-card>
+  <ion-card-header>
+    Header
+  </ion-card-header>
+  <ion-card-content>
+    The British use the term "header", but the American term "head-shot" the English simply refuse to adopt.
+  </ion-card-content>
+</ion-card>
+
+
+</ion-content>

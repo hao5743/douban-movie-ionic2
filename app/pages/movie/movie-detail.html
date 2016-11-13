@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-navbar hideBackButton="true">
+
+    <ion-buttons>
+      <button (click)="goBack()">
+        <ion-icon name="ios-arrow-back"></ion-icon>
+        返回
+      </button>
+    </ion-buttons>
+
+    <ion-title>
+      电影详情
+    </ion-title>
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="movie">
+  <div align="center" *ngIf="fetching">
+    <ion-spinner name="ios"></ion-spinner><br>
+    正在获取数据
+  </div>
+  <div *ngIf="!fetching">
+    <h2 align="center">{{movie.title}}</h2>
+    <ion-grid>
+      <ion-row>
+        <ion-col width-50>
+          <img src="{{movie.images.large}}">
+        </ion-col>
+        <ion-col>
+          <span *ngIf="movie.directors.length>0" >
+            导演:<span class="info">{{movie.directors[0].name}}</span><br>
+          </span >
+          主演:<span class="info">{{getCasts(movie.casts)}}</span><br>
+          类型:<span class="info">{{movie.genres.join('/')}}</span><br>
+          语言:<span class="info">英语</span><br>
+          上映日期:<span>{{movie.year}}</span><br>
+          又名:<span>{{movie.original_title}}</span><br>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <hr>
+    <div *ngIf="movie.summary">
+      {{movie.summary}}
+    </div>
+    <div *ngIf="movie.directors.length>0">
+      <p >导演</p>
+      <div *ngFor="let p of movie.directors" (click)="goActor(p)">
+        <img *ngIf="p.avatars" src="{{p.avatars.medium}}" class="actorMediumImg">
+        {{p.name}}
+      </div>
+    </div>
+
+    <div *ngIf="movie.casts.length>0">
+      <p>主演</p>
+      <div *ngFor="let p of movie.casts" (click)="goActor(p)">
+        <img *ngIf="p.avatars" src="{{p.avatars.medium}}" class="actorMediumImg">
+        {{p.name}}
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+
+
+</ion-content>

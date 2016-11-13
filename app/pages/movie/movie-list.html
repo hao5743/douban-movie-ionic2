@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      豆瓣电影
+    </ion-title>
+    <ion-buttons end>
+      <button (click)="firstGet()">
+        <ion-icon name="ios-refresh"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button (click)="showChooseMovieType()">
+        <ion-icon name="ios-list"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="movie">
+  <div align="center" *ngIf="movies.fetching" >
+    <ion-spinner name="ios"></ion-spinner><br>
+    <span>正在获取</span>
+  </div>
+  <ion-refresher (ionRefresh)="pullToRefresh($event)" style="border: none">
+    <ion-refresher-content
+      pullingIcon="ios-arrow-round-down"
+      pullingText="下拉刷新"
+      refreshingSpinner="ios"
+      refreshingText="正在获取...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+    <ion-item *ngFor="let p of movies.subjects" (click)="goDetail(p)">
+      <ion-avatar item-left>
+        <img src="{{p.images.small}}">
+      </ion-avatar>
+      <p>{{p.title}}</p>
+      <p>{{p.original_title}}</p>
+    </ion-item>
+
+    <ion-infinite-scroll *ngIf="movies.hasMore" (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="ios"
+        loadingText="正在获取...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+  </ion-list>
+
+
+</ion-content>

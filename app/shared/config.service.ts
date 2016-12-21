@@ -7,6 +7,7 @@ const releaseURL =  "https://api.douban.com";
 export class ConfigService {
   mode = 'dev'; //dev or release
   hostURL = '';
+  pageCount = 15;
 
   constructor() {
     this.initEnvironment();
@@ -22,7 +23,4 @@ export class ConfigService {
     }
   }
 
-  getHost() {
-    return this.hostURL;
-  }
 }

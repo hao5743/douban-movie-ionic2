@@ -1,17 +1,14 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
-
     <ion-buttons>
       <button (click)="goBack()">
         <ion-icon name="ios-arrow-back"></ion-icon>
         返回
       </button>
     </ion-buttons>
-
     <ion-title>
       电影详情
     </ion-title>
-
   </ion-navbar>
 </ion-header>
 
@@ -50,7 +47,6 @@
         {{p.name}}
       </div>
     </div>
-
     <div *ngIf="movie.casts.length>0">
       <p>主演</p>
       <div *ngFor="let p of movie.casts" (click)="goActor(p)">
@@ -58,12 +54,5 @@
         {{p.name}}
       </div>
     </div>
-
-
   </div>
-
-
-
-
-
 </ion-content>

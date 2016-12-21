@@ -27,7 +27,7 @@
       pullingIcon="ios-arrow-round-down"
       pullingText="下拉刷新"
       refreshingSpinner="ios"
-      refreshingText="正在获取...">
+      refreshingText="正在刷新...">
     </ion-refresher-content>
   </ion-refresher>
 
@@ -50,7 +50,7 @@
     <ion-infinite-scroll *ngIf="movies.hasMore" (ionInfinite)="doInfinite($event)">
       <ion-infinite-scroll-content
         loadingSpinner="ios"
-        loadingText="正在获取...">
+        loadingText="正在加载更多...">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
 

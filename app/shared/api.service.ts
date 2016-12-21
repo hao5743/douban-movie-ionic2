@@ -1,81 +1,65 @@
-import {Injectable} from  '@angular/core';
-import {Http,RequestOptions,Headers} from '@angular/http';
-import {ConfigService} from './config.service';
-import {Observable} from 'rxjs/Observable';
+import {
+  Injectable
+} from '@angular/core';
+import {
+  Http,
+  Response,
+  RequestOptions,
+  Headers
+} from '@angular/http';
+import {
+  ConfigService
+} from './config.service';
+import {
+  Observable
+} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
+
 @Injectable()
-export class Api{
+export class Api {
   private hostUrl;
+  private requestOpts;
 
-  constructor(private http:Http, private configService:ConfigService){
-    this.hostUrl = this.configService.getHost();
+  constructor(private http: Http, private configService: ConfigService) {
+    this.init();
   }
 
-  testGet(url,param){
-    return new Promise(resolve => {
-      this.http.get(this.hostUrl+url)
-        .map(res => res.json())
-        .subscribe(data => {
-          resolve(data);
-        });
+  private init() {
+    //init hosturl
+    this.hostUrl = this.configService.hostURL;
+    //init headers
+    let headers = new Headers();
+    //config your request headers here
+    // headers.append('Accept', '*/*');
+    // headers.append('Cache-Control', 'no-cache');
+    this.requestOpts = new RequestOptions({
+      headers: headers
     });
   }
 
-  makeRequest(type,u,body):Promise<any>{
-    const url = this.hostUrl+u;
-
-    let headers,opts;
-    headers = new Headers();
-    headers.append('Accept', '*/*');
-    headers.append('Cache-Control','no-cache');
-    opts = new RequestOptions({
-      headers:headers
-    });
-
-    var that = this;
-    function myRequest(){
-      switch (type){
-        case 'get':
-          return that.http.get(url,opts);
-        case 'delete':
-          return that.http.delete(url,opts);
-        case 'put':
-          return that.http.put(url,body,opts);
-        case 'post':
-          return that.http.post(url,body,opts);
-      }
+  private handleError(error: Response | any) {
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
     }
-    // return new Promise((resolve) => {
-    //   myRequest()
-    //     .toPromise()
-    //     .then(res => res.json().data)
-    //     .catch((err) => {
-    //         return Observable.throw(err.json().error || 'Server error');
-    //     })
-    //     // .subscribe(data => {
-    //     //   resolve(data);
-    //     // })
-    //     // .catch(err => {
-    //     //   console.log(err || 'Server error');
-    //     //   return err;
-    //     //   // return Observable.throw(err.json().error || 'Server error');
-    //     // })
-      
-    // });
-    return  myRequest()
-        .toPromise()
-        .then(res => res.json())
-        .catch((err) => {
-            console.log(err.json().error || 'Server error.');
-            return err.json();
-            // return Observable.throw(err.json().error || 'Server error');
-        })
-
+    console.error(errMsg);
+    return Promise.reject(errMsg);
   }
 
-  get(url:string, params?: any){
+  getWithNoParam(url) {
+    return this.http.get(this.hostUrl + url)
+      .toPromise()
+      .then(res => res.json())
+      .catch(this.handleError);
+  }
+
+  get(url: string, params ? : any) {
     if (params) {
       let paramsArray = [];
       Object.keys(params).forEach(key => paramsArray.push(key + '=' + encodeURIComponent(params[key])))
@@ -85,19 +69,28 @@ export class Api{
         url += '&' + paramsArray.join('&')
       }
     }
-    console.log(url);
-    return this.makeRequest('get',url, null);
+    return this.http.get(this.hostUrl + url, this.requestOpts)
+      .toPromise()
+      .then(res => res.json())
+      .catch(this.handleError);
   }
-  post(url, body){
-    return this.makeRequest('post',url, body);
+  post(url, body) {
+    return this.http.post(this.hostUrl + url, body, this.requestOpts)
+      .toPromise()
+      .then(res => res.json())
+      .catch(this.handleError);
   }
-  put(url, body){
-    return this.makeRequest('put',url, body);
+  put(url, body) {
+    return this.http.put(this.hostUrl + url, body, this.requestOpts)
+      .toPromise()
+      .then(res => res.json())
+      .catch(this.handleError);
   }
-  delete(url){
-    return this.makeRequest('delete',url, null);
+  delete(url) {
+    return this.http.delete(this.hostUrl + url, this.requestOpts)
+      .toPromise()
+      .then(res => res.json())
+      .catch(this.handleError);
   }
-
-
 
 }

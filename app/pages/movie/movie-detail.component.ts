@@ -32,8 +32,6 @@ export class MovieDetailPage implements OnInit{
     this.movieService.getMovie(id).then(res=>{
       this.fetching = false;
       this.movie = res;
-      console.log('123');
-      console.log(res);
     })
   }
 

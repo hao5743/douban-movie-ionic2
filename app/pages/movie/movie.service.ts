@@ -9,10 +9,12 @@ import {ACTOR} from'./mock/actor.mock'
 export class MovieService {
   constructor(private http: Http,private api:Api, private configService:ConfigService) {}
 
-  getTom250(start,count) {
+  getTom250(start,count) :any {
     // return this.api.get('/v2/movie/top250',{start,count});
-    console.log(start);
-    return Promise.resolve({subjects:MOVIE.subjects.slice(start,start+count)});
+    
+    return this.api.testGet('/v2/movie/top250?start=0&count=3','');
+    // console.log(start);
+    // return Promise.resolve({subjects:MOVIE.subjects.slice(start,start+count)});
   }
 
   getMovie(id) {

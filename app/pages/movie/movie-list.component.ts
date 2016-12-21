@@ -43,41 +43,50 @@ export class MoviePage implements OnInit {
   }
 
   firstGet() {
-    this.movies.fetching = true;
-    this.getMovies(0).then(res=>this.movies.fetching = false);
+     this.movies.subjects = [];
+     this.pagination.start = 0;
+     this.getMovies().then();
   }
 
-  private getMovies(start: number) {
-    if (start === 0) {
-      this.pagination.start = 0;
-      this.movies.subjects = [];
-    }
+  private getMovies() {
+    this.movies.fetching = true;
     return this.movieService.getTom250(this.pagination.start, this.pagination.count).then(res=> {
-      let movies = res.subjects;
+      let movies : any = res.subjects;
       if (movies.length < this.pagination.count) {
         this.movies.hasMore = false;
       }
       this.pagination.start = this.pagination.start + this.pagination.count;
+      movies.forEach((e)=>{
+        e.castsStr = e.casts.map(e=>e.name).join(',');
+        e.genresStr = e.genres.join(' / ');
+      })
       this.movies.subjects = this.movies.subjects.concat(movies);
+       this.movies.fetching = false;
     })
   }
 
   pullToRefresh(refresher) {
-    this.getMovies(0).then(res=>refresher.complete());
+     this.movies.subjects = [];
+     this.pagination.start = 0;
+     this.getMovies().then(res=>refresher.complete());
   }
 
   doInfinite(infiniteScroll) {
     if (!this.movies.hasMore) return;
-    this.getMovies(this.pagination.start).then(res=>infiniteScroll.complete());
+    this.getMovies().then(res=>infiniteScroll.complete());
   }
 
   showMovieInfo(info) {
-    let alert = this.AlertController.create({
-      title: '电影信息',
-      subTitle: info,
-      buttons: ['好的']
-    });
-    alert.present();
+    // console.log('123');
+    // console.log(info);
+    // let alert = this.AlertController.create({
+    //   title: '电影信息',
+    //   subTitle: info,
+    //   buttons: ['好的']
+    // });
+    // alert.present();
+    this.goDetail(info);
+
   }
 
 

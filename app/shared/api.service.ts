@@ -4,6 +4,7 @@ import {ConfigService} from './config.service';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class Api{
   private hostUrl;
@@ -12,7 +13,7 @@ export class Api{
     this.hostUrl = this.configService.getHost();
   }
 
-  myGet(url,param){
+  testGet(url,param){
     return new Promise(resolve => {
       this.http.get(this.hostUrl+url)
         .map(res => res.json())
@@ -46,18 +47,31 @@ export class Api{
           return that.http.post(url,body,opts);
       }
     }
-    return new Promise((resolve) => {
-      myRequest()
-        .map(res => res.json())
-        .catch(err => {
-          console.log(err || 'Server error');
-          return err;
-          // return Observable.throw(err.json().error || 'Server error');
+    // return new Promise((resolve) => {
+    //   myRequest()
+    //     .toPromise()
+    //     .then(res => res.json().data)
+    //     .catch((err) => {
+    //         return Observable.throw(err.json().error || 'Server error');
+    //     })
+    //     // .subscribe(data => {
+    //     //   resolve(data);
+    //     // })
+    //     // .catch(err => {
+    //     //   console.log(err || 'Server error');
+    //     //   return err;
+    //     //   // return Observable.throw(err.json().error || 'Server error');
+    //     // })
+      
+    // });
+    return  myRequest()
+        .toPromise()
+        .then(res => res.json())
+        .catch((err) => {
+            console.log(err.json().error || 'Server error.');
+            return err.json();
+            // return Observable.throw(err.json().error || 'Server error');
         })
-        .subscribe(data => {
-          resolve(data);
-        });
-    });
 
   }
 
